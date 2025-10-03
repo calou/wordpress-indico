@@ -82,7 +82,7 @@ function wpi_import_single_event($url)
 
 function wpi_create_content($item)
 {
-  $header = '<!-- wp:create-block/wpi-event-header /-->';
+  $header = '<!-- wp:create-block/wpi-event-header {"className":"alignfull"} /-->';
   $raw = wp_kses_post($item['description']);
 
   return $header .  $raw;

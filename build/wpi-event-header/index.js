@@ -8,7 +8,7 @@
   \*****************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"create-block/wpi-event-header","version":"0.1.0","title":"Event header","category":"widgets","icon":"heading","description":"Header for an event","example":{},"supports":{"html":false,"multiple":false},"textdomain":"wpi-event-header","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","render":"file:./render.php","viewScript":"file:./view.js"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"create-block/wpi-event-header","version":"0.1.0","title":"Event header","category":"widgets","icon":"heading","description":"Event header","example":{},"supports":{"html":false,"multiple":false},"textdomain":"wpi-event-header","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","render":"file:./render.php","viewScript":"file:./view.js"}');
 
 /***/ }),
 

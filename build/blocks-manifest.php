@@ -9,7 +9,7 @@ return array(
 		'title' => 'Event header',
 		'category' => 'widgets',
 		'icon' => 'heading',
-		'description' => 'Header for an event',
+		'description' => 'Event header',
 		'example' => array(
 			
 		),

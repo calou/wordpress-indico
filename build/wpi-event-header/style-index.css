@@ -1,16 +1,65 @@
 /*!********************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/wpi-event-header/style.scss ***!
   \********************************************************************************************************************************************************************************************************************************************************/
-/**
- * The following styles get applied both on the front of your site
- * and in the editor.
- *
- * Replace them with your own styles or remove the file completely.
- */
+:root {
+  --wpi-event-header-default-bg-color: #21759b;
+  --wpi-event-header-default-color: #fff;
+  --wpi-event-header-button-padding: 5px 10px;
+}
+
 .wp-block-create-block-wpi-event-header {
-  background-color: #21759b;
-  color: #fff;
-  padding: 2px;
+  background-color: var(--wpi-event-header-default-bg-color);
+  color: var(--wpi-event-header-default-color);
+}
+
+.wpi-event-header {
+  padding: var(--wpi-event-header-padding, 10px 0px);
+}
+
+.wpi-event-header-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-areas: "a c" "b c";
+  grid-gap: 10px;
+}
+
+.wpi-event-header-start-date {
+  -ms-grid-row: 1;
+  -ms-grid-column: 1;
+  grid-area: a;
+}
+
+.wpi-event-header-location {
+  -ms-grid-row: 3;
+  -ms-grid-column: 1;
+  grid-area: b;
+}
+
+.wpi-event-header-links {
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 3;
+  -ms-grid-column: 3;
+  grid-area: c;
+  align-self: center;
+  justify-self: end;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wpi-event-header-register-link a {
+  padding: var(--wpi-event-header-register-link-padding, var(--wpi-event-header-button-padding));
+  border: var(--wpi-event-header-register-link-border, 1px solid var(--wpi-event-header-default-color));
+  border-radius: var(--wpi-event-header-register-link-border-radius, 12px);
+  text-decoration: none;
+}
+.wpi-event-header-register-link a:hover {
+  background-color: var(--wpi-event-header-register-link-bg-color-hover, var(--wpi-event-header-default-color));
+  color: var(--wpi-event-header-register-link-color-hover, var(--wpi-event-header-default-bg-color));
+}
+
+.wpi-event-header-ical-link a {
+  font-size: smaller;
 }
 
 /*# sourceMappingURL=style-index.css.map*/
