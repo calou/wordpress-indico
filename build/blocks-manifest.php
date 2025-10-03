@@ -6,15 +6,16 @@ return array(
 		'apiVersion' => 3,
 		'name' => 'create-block/wpi-event-header',
 		'version' => '0.1.0',
-		'title' => 'Wpi Event Header',
+		'title' => 'Event header',
 		'category' => 'widgets',
-		'icon' => 'smiley',
-		'description' => 'Example block scaffolded with Create Block tool.',
+		'icon' => 'heading',
+		'description' => 'Header for an event',
 		'example' => array(
 			
 		),
 		'supports' => array(
-			'html' => false
+			'html' => false,
+			'multiple' => false
 		),
 		'textdomain' => 'wpi-event-header',
 		'editorScript' => 'file:./index.js',
