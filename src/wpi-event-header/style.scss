@@ -59,5 +59,8 @@
 
   & a {
     font-size: smaller;
+    &:before {
+      content: "\002B";
+    }
   }
 }

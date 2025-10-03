@@ -61,3 +61,6 @@
 .wpi-event-header-ical-link a {
   font-size: smaller;
 }
+.wpi-event-header-ical-link a:before {
+  content: "+";
+}

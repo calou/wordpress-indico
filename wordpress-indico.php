@@ -38,3 +38,6 @@ function create_blocks_init()
   }
 }
 add_action('init', 'create_blocks_init');
+
+
+require_once WPI_PLUGIN_DIR . 'includes/ical.php';

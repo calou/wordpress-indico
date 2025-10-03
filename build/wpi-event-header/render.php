@@ -16,16 +16,20 @@ $location = 'Grenoble, France';
   <div class="wpi-event-header is-layout-constrained">
     <div class="wpi-event-header-container">
 
-      <div class="wpi-event-header-start-date"><?php echo esc_html($start_date); ?></div>
+      <div class="wpi-event-header-start-date">
+        &#x1F551;&nbsp;<?php echo esc_html($start_date); ?>
+      </div>
 
-      <div class="wpi-event-header-location"><?php echo esc_html($location); ?></div>
+      <div class="wpi-event-header-location">
+        &#x26FA;&nbsp;<?php echo esc_html($location); ?>
+      </div>
 
       <div class="wpi-event-header-links">
         <div class="wpi-event-header-register-link">
           <a href="<?php echo esc_url($url); ?>" target="_blank" rel="noopener noreferrer">Register now</a>
         </div>
         <div class="wpi-event-header-ical-link">
-          <a href="<?php echo esc_url($url); ?>" target="_blank" rel="noopener noreferrer">Add to my calendar</a>
+          <a href="<?php echo wpi_ics_download_link($post->ID) ?>" download target="_blank" rel="noopener noreferrer">Add to my calendar</a>
         </div>
       </div>
 
