@@ -2,7 +2,11 @@
 
 function wpi_import_single_event($url)
 {
-  $response = wp_remote_get($url);
+
+  // TODO update if already exists
+
+  $json_url = wpi_get_event_json_url($url);
+  $response = wp_remote_get($json_url);
 
   if (is_wp_error($response)) {
     return 'Failed to fetch JSON: ' . $response->get_error_message();
@@ -30,11 +34,45 @@ function wpi_import_single_event($url)
       $post_id = wp_insert_post($post_data);
       if ($post_id && !is_wp_error($post_id)) {
         // Save original item as post meta (encoded JSON)
-        update_post_meta($post_id, '_wpi_original_json', wp_json_encode($item));
+        update_post_meta($post_id, '_wpi_indico_url', $json);
+        update_post_meta($post_id, '_wpi_indico_json', $json);
         $created++;
       }
     }
   }
 
   return "Successfully created $created pages.";
+}
+
+
+function wpi_get_event_json_url($url)
+{
+  $parsed = parse_url($url);
+
+  if (!isset($parsed['host'], $parsed['path'])) {
+    return false; // Invalid URL
+  }
+
+  // Ensure the path ends with a slash
+  $path = rtrim($parsed['path'], '/') . '/';
+
+  // Match URLs like /event/215/ and extract ID
+  if (preg_match('#/event/(\d+)/$#', $path, $matches)) {
+    $event_id = $matches[1];
+    $rewritten_path = "/export/event/{$event_id}.json";
+
+    // Build new URL
+    $scheme = isset($parsed['scheme']) ? $parsed['scheme'] : 'https';
+    $host = $parsed['host'];
+
+    $query = http_build_query([
+      'detail' => 'sessions',
+      'pretty' => 'yes',
+    ]);
+
+    return "{$scheme}://{$host}{$rewritten_path}?{$query}";
+  }
+
+  return false; // Not a recognized Indico event URL
+
 }
