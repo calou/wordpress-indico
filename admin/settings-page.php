@@ -36,7 +36,7 @@ function wpi_render_settings_page()
       <?php wp_nonce_field('wpi_import_nonce_action', 'wpi_import_nonce'); ?>
       <table class="form-table">
         <tr valign="top">
-          <th scope="row">URL of the event</th>
+          <th scope="row">URL of the category</th>
           <td><input type="url" name="wpi_category_url" size="150" required /></td>
         </tr>
       </table>
