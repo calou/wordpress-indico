@@ -20,7 +20,7 @@ function wpi_import_single_event($url)
 
   $existing = get_posts([
     'post_type'  => 'page',
-    'meta_key'   => WPI_EVENT_URL_META_KEY,
+    'meta_key'   => WPI_EVENT_URL,
     'meta_value' => $data['url'],
     'numberposts' => 1,
     'post_status' => 'any',
@@ -33,7 +33,7 @@ function wpi_import_single_event($url)
       if (isset($item['title']) && isset($item['description'])) {
         $post_data = [
           'post_title'   => sanitize_text_field($item['title']),
-          'post_content' => wp_kses_post($item['description']),
+          'post_content' => wpi_create_content($item),
           'post_status'  => 'draft',
           'post_type'    => 'page',
         ];
@@ -54,10 +54,19 @@ function wpi_import_single_event($url)
   }
 }
 
+function wpi_create_content($item)
+{
+  $raw = wp_kses_post($item['description']);
+
+  return $raw;
+}
+
 function wpi_update_metadata($post_id, $json)
 {
   $data = json_decode($json, true);
-  update_post_meta($post_id, WPI_EVENT_URL_META_KEY, $data['url']);
+
+  update_post_meta($post_id, WPI_EVENT_FLAG, WPI_EVENT_FLAG_VALUE);
+  update_post_meta($post_id, WPI_EVENT_URL, $data['url']);
   update_post_meta($post_id, WPI_EVENT_JSON, $json);
 }
 
