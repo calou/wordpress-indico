@@ -15,6 +15,7 @@ if (!defined('ABSPATH')) {
 // Define constants
 define('WPI_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('WPI_PLUGIN_URL', plugin_dir_url(__FILE__));
+require_once WPI_PLUGIN_DIR . 'includes/models/event.php';
 
 // Include necessary files
 require_once WPI_PLUGIN_DIR . 'includes/constants.php';
@@ -41,3 +42,15 @@ add_action('init', 'create_blocks_init');
 
 
 require_once WPI_PLUGIN_DIR . 'includes/ical.php';
+
+
+function wpi_enqueue_fontawesome()
+{
+  wp_enqueue_style(
+    'font-awesome',
+    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css',
+    array(), // Dependencies
+    '6.5.0'   // Version
+  );
+}
+add_action('wp_enqueue_scripts', 'wpi_enqueue_fontawesome'); // For frontend

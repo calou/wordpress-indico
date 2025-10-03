@@ -2,9 +2,12 @@
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/wpi-event-header/style.scss ***!
   \********************************************************************************************************************************************************************************************************************************************************/
 :root {
-  --wpi-event-header-default-bg-color: #21759b;
-  --wpi-event-header-default-color: #fff;
+  --wpi-event-header-default-bg-color: #1A659E;
+  --wpi-event-header-default-color: #EFEFD0;
   --wpi-event-header-button-padding: 5px 10px;
+  --wpi-event-header-default-ellipsis-menu-color: #EFEFD0;
+  --wpi-event-header-default-ellipsis-menu-bg-color: #004E89;
+  --wpi-event-header-default-ellipsis-menu-box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 .wp-block-create-block-wpi-event-header {
@@ -43,7 +46,7 @@
   align-self: center;
   justify-self: end;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 8px;
 }
 
@@ -58,11 +61,34 @@
   color: var(--wpi-event-header-register-link-color-hover, var(--wpi-event-header-default-bg-color));
 }
 
-.wpi-event-header-ical-link a {
-  font-size: smaller;
+.wpi-event-header-ellipsis {
+  position: relative;
+  padding: 0 8px;
 }
-.wpi-event-header-ical-link a:before {
-  content: "+";
+.wpi-event-header-ellipsis .wpi-event-header-ellipsis-menu-outer {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+  padding-top: 28px;
+}
+.wpi-event-header-ellipsis:hover .wpi-event-header-ellipsis-menu-outer {
+  display: block;
+}
+.wpi-event-header-ellipsis .wpi-event-header-ellipsis-menu {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--wpi-event-header-ellipsis-menu-bg-color, var(--wpi-event-header-default-ellipsis-menu-bg-color));
+  box-shadow: var(--wpi-event-header-ellipsis-menu-box-shadow, var(--wpi-event-header-default-ellipsis-menu-box-sahdow));
+  border-radius: 4px;
+  min-width: 300px;
+}
+.wpi-event-header-ellipsis .wpi-event-header-ellipsis-menu a {
+  font-size: smaller;
+  padding: 4px 12px;
+  color: var(--wpi-event-header-ellipsis-menu-color, var(--wpi-event-header-default-ellipsis-menu-color));
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=style-index.css.map*/

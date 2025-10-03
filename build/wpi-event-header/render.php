@@ -2,14 +2,8 @@
 global $post;
 
 $json = get_post_meta($post->ID, WPI_EVENT_JSON, true);
-
-$data = json_decode($json);
-//$event = $data['results'][0];
-//$start_date = $event['startDate']['date'];
-$start_date = '2024-10-11';
-//$url = $event['url'];
-$url = 'https://indico.esrf.fr/event/157/';
-$location = 'Grenoble, France';
+$event = new Event($json);
+$event_details = $event->getCalendarExportData();
 
 ?>
 <div <?php echo get_block_wrapper_attributes(); ?>>
@@ -17,19 +11,27 @@ $location = 'Grenoble, France';
     <div class="wpi-event-header-container">
 
       <div class="wpi-event-header-start-date">
-        &#x1F551;&nbsp;<?php echo esc_html($start_date); ?>
+        <i class="fa-regular fa-clock"></i> <?php echo $event->startDate; ?>&nbsp;-&nbsp;<?php echo $event->endDate; ?>
       </div>
 
       <div class="wpi-event-header-location">
-        &#x26FA;&nbsp;<?php echo esc_html($location); ?>
+        <i class="fa-solid fa-location-dot"></i> <?php echo $event_details['location']; ?>
       </div>
 
       <div class="wpi-event-header-links">
         <div class="wpi-event-header-register-link">
-          <a href="<?php echo esc_url($url); ?>" target="_blank" rel="noopener noreferrer">Register now</a>
+          <a href="<?php echo esc_url($event_details['url']); ?>" target="_blank" rel="noopener noreferrer">Register now</a>
         </div>
-        <div class="wpi-event-header-ical-link">
-          <a href="<?php echo wpi_ics_download_link($post->ID) ?>" download target="_blank" rel="noopener noreferrer">Add to my calendar</a>
+        <div class="wpi-event-header-ellipsis">
+          <i class="fa-solid fa-ellipsis-vertical"></i>
+
+          <div class="wpi-event-header-ellipsis-menu-outer">
+            <div class="wpi-event-header-ellipsis-menu">
+              <a href="<?php echo wpi_ics_download_link($post->ID) ?>" download target="_blank" rel="noopener noreferrer">Add to my calendar (ICS, iCal)</a>
+              <a href="<?php echo wpi_generate_google_calendar_url($post->ID) ?>" target="_blank" rel="noopener noreferrer">Add to my Google calendar</a>
+              <a href="<?php echo wpi_generate_outlook_calendar_url($post->ID) ?>" target="_blank" rel="noopener noreferrer">Add to my Outlook calendar</a>
+            </div>
+          </div>
         </div>
       </div>
 

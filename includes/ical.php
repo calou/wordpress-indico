@@ -34,13 +34,16 @@ function handle_ics_download()
   $event_location = get_post_meta($event_id, 'event_location', true);
   $event_description = get_post_meta($event_id, 'event_description', true);
 
+  $json = get_post_meta($event_id, WPI_EVENT_JSON, true);
+  $event = new Event($json);
+  $event_details = $event->getCalendarExportData();
+
   // Generate ICS content
   $ics_content = generate_ics_file(
-    $event_title,
-    $event_start,
-    $event_end,
-    $event_location,
-    $event_description,
+    $event_details['title'],
+    $event_details['start'],
+    $event_details['end'],
+    $event_details['location'],
     get_permalink($event_id)
   );
 
@@ -113,6 +116,42 @@ function ics_escape($text)
   $text = str_replace("\n", '\\n', $text);
   $text = str_replace("\r", '', $text);
   return $text;
+}
+
+function wpi_generate_google_calendar_url($event_id)
+{
+  $json = get_post_meta($event_id, WPI_EVENT_JSON, true);
+  $event = new Event($json);
+  $event_details = $event->getCalendarExportData();
+  $params = [
+    'action' => 'TEMPLATE',
+    'text' => $event_details['title'],
+    'dates' => date('Ymd\THis', strtotime($event_details['start'])) . '/' . date('Ymd\THis', strtotime($event_details['end'])),
+    'details' => get_permalink($event_id),
+    'location' => $event_details['location'],
+    'sprop' => 'website:' . home_url()
+  ];
+
+  return 'https://calendar.google.com/calendar/render?' . http_build_query($params);
+}
+
+// 3. Outlook.com Calendar URL generator
+function wpi_generate_outlook_calendar_url($event_id)
+{
+  $json = get_post_meta($event_id, WPI_EVENT_JSON, true);
+  $event = new Event($json);
+  $event_details = $event->getCalendarExportData();
+  $params = [
+    'path' => '/calendar/action/compose',
+    'rru' => 'addevent',
+    'subject' => $event_details['title'],
+    'startdt' => date('Y-m-d\TH:i:s', strtotime($event_details['start'])),
+    'enddt' => date('Y-m-d\TH:i:s', strtotime($event_details['end'])),
+    'location' => $event_details['location'],
+    'body' => get_permalink($event_id)
+  ];
+
+  return 'https://outlook.live.com/calendar/0/deeplink/compose?' . http_build_query($params);
 }
 
 // 5. Example usage in your event template
