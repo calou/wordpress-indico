@@ -82,9 +82,10 @@ function wpi_import_single_event($url)
 
 function wpi_create_content($item)
 {
+  $header = '<!-- wp:create-block/wpi-event-header /-->';
   $raw = wp_kses_post($item['description']);
 
-  return $raw;
+  return $header .  $raw;
 }
 
 function wpi_update_metadata($post_id, $json)
