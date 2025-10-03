@@ -17,18 +17,22 @@ function wpi_import_single_event($url)
 
   $created = 0;
 
-  foreach ($data as $item) {
+  foreach ($data['results'] as $item) {
     // Assumes each $item has 'title' and 'content'
-    if (isset($item['title']) && isset($item['content'])) {
+    if (isset($item['title']) && isset($item['description'])) {
       $post_data = [
         'post_title'   => sanitize_text_field($item['title']),
-        'post_content' => wp_kses_post($item['content']),
-        'post_status'  => 'publish',
+        'post_content' => wp_kses_post($item['description']),
+        'post_status'  => 'draft',
         'post_type'    => 'page',
       ];
 
-      wp_insert_post($post_data);
-      $created++;
+      $post_id = wp_insert_post($post_data);
+      if ($post_id && !is_wp_error($post_id)) {
+        // Save original item as post meta (encoded JSON)
+        update_post_meta($post_id, '_wpi_original_json', wp_json_encode($item));
+        $created++;
+      }
     }
   }
 
