@@ -3,8 +3,8 @@
 /**
  * Plugin Name: WordPress Indico
  * Description: Imports JSON data from a URL and creates pages from it.
- * Version: 1.0.0
- * Author: Your Name
+ * Version: 0.0.1
+ * Author: Sébastien Gruchet
  * Text Domain: wordpress-indico
  */
 
