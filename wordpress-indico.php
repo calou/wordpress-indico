@@ -17,5 +17,6 @@ define('WPI_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('WPI_PLUGIN_URL', plugin_dir_url(__FILE__));
 
 // Include necessary files
+require_once WPI_PLUGIN_DIR . 'includes/constants.php';
 require_once WPI_PLUGIN_DIR . 'admin/settings-page.php';
 require_once WPI_PLUGIN_DIR . 'includes/importer.php';

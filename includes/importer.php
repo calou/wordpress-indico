@@ -1,9 +1,8 @@
 <?php
 
+
 function wpi_import_single_event($url)
 {
-
-  // TODO update if already exists
 
   $json_url = wpi_get_event_json_url($url);
   $response = wp_remote_get($json_url);
@@ -19,31 +18,48 @@ function wpi_import_single_event($url)
     return 'Invalid JSON format.';
   }
 
-  $created = 0;
+  $existing = get_posts([
+    'post_type'  => 'page',
+    'meta_key'   => WPI_EVENT_URL_META_KEY,
+    'meta_value' => $data['url'],
+    'numberposts' => 1,
+    'post_status' => 'any',
+  ]);
 
-  foreach ($data['results'] as $item) {
-    // Assumes each $item has 'title' and 'content'
-    if (isset($item['title']) && isset($item['description'])) {
-      $post_data = [
-        'post_title'   => sanitize_text_field($item['title']),
-        'post_content' => wp_kses_post($item['description']),
-        'post_status'  => 'draft',
-        'post_type'    => 'page',
-      ];
+  if (empty($existing)) {
+    $created = 0;
+    foreach ($data['results'] as $item) {
+      // Assumes each $item has 'title' and 'content'
+      if (isset($item['title']) && isset($item['description'])) {
+        $post_data = [
+          'post_title'   => sanitize_text_field($item['title']),
+          'post_content' => wp_kses_post($item['description']),
+          'post_status'  => 'draft',
+          'post_type'    => 'page',
+        ];
 
-      $post_id = wp_insert_post($post_data);
-      if ($post_id && !is_wp_error($post_id)) {
-        // Save original item as post meta (encoded JSON)
-        update_post_meta($post_id, '_wpi_indico_url', $json);
-        update_post_meta($post_id, '_wpi_indico_json', $json);
-        $created++;
+        $post_id = wp_insert_post($post_data);
+        if ($post_id && !is_wp_error($post_id)) {
+          wpi_update_metadata($post_id, $json);
+          $created++;
+        }
       }
     }
+    return "Successfully created $created page(s).";
+  } else {
+    // Update only the metadata
+    $post_id = $existing[0]->ID;
+    wpi_update_metadata($post_id, $json);
+    return "Successfully updated 1 page.";
   }
-
-  return "Successfully created $created pages.";
 }
 
+function wpi_update_metadata($post_id, $json)
+{
+  $data = json_decode($json, true);
+  update_post_meta($post_id, WPI_EVENT_URL_META_KEY, $data['url']);
+  update_post_meta($post_id, WPI_EVENT_JSON, $json);
+}
 
 function wpi_get_event_json_url($url)
 {
