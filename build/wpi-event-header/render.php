@@ -27,7 +27,7 @@ $event_details = $event->getCalendarExportData();
 
           <div class="wpi-event-header-ellipsis-menu-outer">
             <div class="wpi-event-header-ellipsis-menu">
-              <a href="<?php echo wpi_ics_download_link($post->ID) ?>" download target="_blank" rel="noopener noreferrer">Add to my calendar (ICS, iCal)</a>
+              <a id="ics-link-<?php echo ($post->ID) ?>" rel="noopener noreferrer">Add to my calendar (ICS, iCal)</a>
               <a href="<?php echo wpi_generate_google_calendar_url($post->ID) ?>" target="_blank" rel="noopener noreferrer">Add to my Google calendar</a>
               <a href="<?php echo wpi_generate_outlook_calendar_url($post->ID) ?>" target="_blank" rel="noopener noreferrer">Add to my Outlook calendar</a>
             </div>
@@ -38,3 +38,29 @@ $event_details = $event->getCalendarExportData();
     </div>
   </div>
 </div>
+<script>
+  // ICS download
+  document.getElementById("ics-link-<?php echo ($post->ID) ?>").addEventListener('click', (e) => {
+    e.preventDefault();
+    const icsContent = `<?php echo wpi_generate_ics($event) ?>`;
+
+    // Create Blob
+    const blob = new Blob([icsContent], {
+      type: 'text/calendar;charset=utf-8'
+    });
+
+    // Create download link
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    // TODO change the filename
+    link.download = "event.ics";
+
+    // Trigger download
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // Clean up
+    window.URL.revokeObjectURL(link.href);
+  });
+</script>
